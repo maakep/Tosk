@@ -19,8 +19,14 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../../index.html"));
 });
 
-app.get("/user/:id", (req, res) => {
+app.get("/users", (req, res) => {
   db.getAllUsers().then((r) => {
+    res.json(r);
+  })
+});
+
+app.get("/user/:id", (req, res) => {
+  db.getUser(req.params.id).then((r) => {
     res.json(r);
   })
 });

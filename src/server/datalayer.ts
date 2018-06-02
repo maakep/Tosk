@@ -16,12 +16,6 @@ export class Database {
       console.log("Connection established!");
     });
 
-    
-    // let rememberToUpdateSchemaWhenUpdatingUser: IUser = { username: 'string', password: 'string', tasks: []};
-  
-
-    
-    // let rememberToUpdateSchemaWhenUpdatingTask: ITask = { id: 'string', taskHeader: 'string', createdAt: new Date(), dueAt: new Date()};
     let taskSchema = new mongoose.Schema({
       taskHeader: String,
       createdAt: {
@@ -32,7 +26,6 @@ export class Database {
     });
     this.TaskModel = mongoose.model("task", taskSchema);
 
-
     let userSchema = new mongoose.Schema({
       username: String,
       password: String,
@@ -42,7 +35,7 @@ export class Database {
         if (!task.createdAt)
           task.createdAt = new Date();
       }
-      next();
+      next(); // <-- Idk what this does
     });
     this.UserModel = mongoose.model("user", userSchema);
   }
@@ -50,18 +43,18 @@ export class Database {
   public async addUser(user: IUser): Promise<boolean> {
     let newUser = new this.UserModel(user);
     let success = await newUser.save((err, obj) => {
-      if (err) {
-        console.error("Failed to save user " + user.username);
-        return false;
-      } else {
-        return true;
-      }
+      if (err) console.error("Failed to save user " + user.username);
     });
     return (success != undefined);
   }
 
   public async addTask(username: string, task: ITask): Promise<IUser> {
     let user = await this.UserModel.findOneAndUpdate({username: username}, {$push: {tasks: task}});
+    return user;
+  }
+
+  public async getUser(username: string) {
+    let user = await this.UserModel.findOne({ username: username });
     return user;
   }
 
