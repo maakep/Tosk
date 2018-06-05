@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "install": "npm install && ./scripts/install_mongodb.ps1 --ExecutionPolicy bypass",
+    "init": "npm install && ./scripts/install_mongodb.ps1 --ExecutionPolicy bypass",
     "start": "ts-node ./src/server/server.ts",
     "build": "webpack",
     "watch": "webpack --watch",
